@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+	var xmlhttp;
+
+	function init() {
+		xmlhttp = new XMLHttpRequest();
+	}
+
+	function getDetails() {
+		var compID = document.getElementById("compID").value;
+		var url = "http://localhost:8080/CouponSystemClient/rest/AdminService/getCompany?companyID=" + compID;
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send(null);
+		xmlhttp.onreadystatechange = function() {
+			var compName = document.getElementById("compName");
+			var compEmail = document.getElementById("compEmail");
+			if (xmlhttp.readyState == 4) {
+				if (xmlhttp.status == 200) {
+					var obj = eval("("+xmlhttp.responseText+")");
+					if (compID > 0) {
+						
+						if(obj.name == ''){
+							alert(obj.errorMessage);
+							compName.value = "" ;
+							compEmail.value = "" ;
+						}else{
+							compName.value = obj.name ;
+							compEmail.value = obj.email ;
+						}
+						
+					}
+					else {
+						compName.value = "" ;
+						compEmail.value = "" ;
+						alert("Invalid Companys id "+compID);
+					}
+				}
+				else
+					alert("Error with the response -> " + xmlhttp.responseText);
+			}
+		};
+	}
+</script>
+
+</head>
+<body onload="init()">
+	<h1>Call Company Service</h1>
+
+	<table>
+
+		<tr>
+			<td>Enter Company ID :</td>
+			<td><input type="text" id="compID" size="10" /> <input
+				type="button" value="Get Details" onclick="getDetails()" />
+		</tr>
+
+		<tr>
+			<td>Company Name :</td>
+			<td><input type="text" readonly="true" id="compName" size="20" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>Company Email :</td>
+			<td><input type="text" readonly="true" id="compEmail" size="20" />
+			</td>
+		</tr>
+
+	</table>
+
+</body>
+</html>

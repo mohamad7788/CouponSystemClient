@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+	var xmlhttp;
+
+	function init() {
+		xmlhttp = new XMLHttpRequest();
+	}
+
+	function createNewCustomerAjaxCall() {
+		var customerID = document.getElementById("customerID").value;
+		var customerName = document.getElementById("customerName").value;
+		var customerPassword = document.getElementById("customerPassword").value;
+
+		var url = "http://localhost:8080/CouponSystemClient/rest/AdminService/createCustomer?customerID="+customerID+"&customerName="+customerName+"&customerPassword="+customerPassword;
+
+		xmlhttp.open("POST", url, true);
+		xmlhttp.send(null);
+		xmlhttp.onreadystatechange = function() {
+			var customerName = document.getElementById("customerName");
+			var customerPassword = document.getElementById("customerPassword");
+			if (xmlhttp.readyState == 4) {
+				if (xmlhttp.status == 200) {
+					//var obj = eval("("+xmlhttp.responseText+")");
+					alert("New Customer with ID "+customerID+" created successfully in the system");
+				}
+				else
+					alert("Can't create customer with the same customer id <id="+customerID+">");
+			}
+		};
+	}
+</script>
+
+</head>
+<body onload="init()">
+	<h1>Call Customer Service</h1>
+
+	<table>
+
+		<tr>
+			<td>Enter Customer ID :</td>
+			<td><input type="text" id="customerID" size="10" /> 
+		</tr>
+
+		<tr>
+			<td>Customer Name :</td>
+			<td><input type="text" id="customerName" size="20" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>Customer Password :</td>
+			<td><input type="password" id="customerPassword" size="20" />
+			</td>
+		</tr>
+
+		<input type="button" value="Create new Customer" onclick="createNewCustomerAjaxCall()" />
+		
+	</table>
+
+</body>
+</html>

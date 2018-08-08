@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+	var xmlhttp;
+
+	function init() {
+		xmlhttp = new XMLHttpRequest();
+	}
+
+	function getDetails() {
+		var custID = document.getElementById("customerID").value;
+		var url = "http://localhost:8080/CouponSystemClient/rest/AdminService/getCustomer?customerID=" + custID;
+		
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send(null);
+		xmlhttp.onreadystatechange = function() {
+			//var compName = document.getElementById("compName");
+			var custName = document.getElementById("custName");
+			//var compEmail = document.getElementById("compEmail");
+			var custPassword = document.getElementById("custPassword");
+			if (xmlhttp.readyState == 4) {
+				if (xmlhttp.status == 200) {
+					
+					var obj = eval("("+xmlhttp.responseText+")");
+					if (custID > 0) {
+						
+						if(obj.name == ''){
+							alert(obj.errorMessage);
+							custName.value = "" ;
+							custPassword.value = "" ;
+							custCouponList.value = "" ; 
+						}else{
+							custName.value = obj.name ;
+							custPassword.value = obj.password ;
+							custCouponList.value = obj.couponsList ;
+							
+						}
+						
+					}
+					else {
+						custName.value = "" ;
+						custPassword.value = "" ;
+						custCouponList.value = "" ;
+						alert("Invalid Customer id "+custID);
+					}
+				}
+				else
+					alert("Error with the response -> " + xmlhttp.responseText);
+			}
+		};
+	}
+</script>
+
+</head>
+<body onload="init()">
+	<h1>Call Customer Service</h1>
+
+	<table>
+
+		<tr>
+			<td>Enter Customer ID :</td>
+			<td><input type="text" id="customerID" size="10" /> <input
+				type="button" value="Get Details" onclick="getDetails()" />
+		</tr>
+
+		<tr>
+			<td>Customer Name :</td>
+			<td><input type="text" readonly="true" id="custName" size="20" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>Customer Password :</td>
+			<td><input type="password" readonly="true" id="custPassword" size="20" />
+			</td>
+		</tr>
+		
+		<tr>
+			<td>Customer coupons List  :</td>
+			<td><input type="text" readonly="true" id="custCouponList" size="20" />
+			</td>
+		</tr>
+
+	</table>
+
+</body>
+</html>

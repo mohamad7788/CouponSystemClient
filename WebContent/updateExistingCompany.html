@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+	var xmlhttp;
+
+	function init() {
+		xmlhttp = new XMLHttpRequest();
+	}
+
+	function updateExistingCompanyAjaxCall() {
+		var compID = document.getElementById("compID").value;
+		var compName = document.getElementById("compName").value;
+		var compPassword = document.getElementById("compPassword").value;
+		var compEmail = document.getElementById("compEmail").value;
+		var url = "http://localhost:8080/CouponSystemClient/rest/AdminService/updateCompany?companyID="+compID+"&companyName="+compName+"&companyPassword="+compPassword+"&companyEmail="+compEmail;
+		xmlhttp.open("POST", url, true);
+		xmlhttp.send(null);
+		xmlhttp.onreadystatechange = function() {
+			//var compName = document.getElementById("compName");
+			//var compEmail = document.getElementById("compEmail");
+			if (xmlhttp.readyState == 4) {
+				if (xmlhttp.status == 200) {
+					alert("Company with ID "+compID+" updated successfully in the system");
+				}
+				else
+					alert("Can't update non-existing company id <id="+compID+">");
+			}
+		};
+	}
+</script>
+
+</head>
+<body onload="init()">
+	<h1>Call Company Service - Update Company</h1>
+
+	<table>
+
+		<tr>
+			<td>Enter Company ID :</td>
+			<td><input type="text" id="compID" size="10" /> 
+		</tr>
+
+		<tr>
+			<td>Company Name :</td>
+			<td><input type="text" id="compName" size="20" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>Company Password :</td>
+			<td><input type="password" id="compPassword" size="20" />
+			</td>
+		</tr>
+
+
+		<tr>
+			<td>Company Email :</td>
+			<td><input type="text" id="compEmail" size="20" />
+			</td>
+		</tr>
+
+		<input type="button" value="Update Company" onclick="updateExistingCompanyAjaxCall()" />
+		
+	</table>
+
+</body>
+</html>

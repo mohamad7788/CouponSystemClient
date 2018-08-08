@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+	var xmlhttp;
+
+	function init() {
+		xmlhttp = new XMLHttpRequest();
+	}
+
+	function doLoginAjaxCall() {
+		var username = document.getElementById("username").value;
+		var password = document.getElementById("password").value;
+		var loginType = document.getElementById("loginType").value;
+		var url = "http://localhost:8080/CouponSystemClient/rest/AdminService/login?username="+username+"&password="+password+"&clientType="+loginType;
+		xmlhttp.open("POST", url, true);
+		xmlhttp.send(null);
+		xmlhttp.onreadystatechange = function() {
+			var compName = document.getElementById("compName");
+			var compEmail = document.getElementById("compEmail");
+			if (xmlhttp.readyState == 4) {
+				if (xmlhttp.status == 200) {
+					//var obj = eval("("+xmlhttp.responseText+")");
+					alert("New Company with ID "+compID+" created successfully in the system");
+				}
+				else
+					alert("Can't create company with the same company id <id="+compID+">");
+			}
+		};
+	}
+</script>
+
+</head>
+<body onload="init()">
+	<h1>Call Admin Service</h1>
+
+	<table>
+
+		<tr>
+			<td>Login username :</td>
+			<td><input type="text" id="username" size="10" /> 
+		</tr>
+
+		<tr>
+			<td>Login Password :</td>
+			<td><input type="password" id="password" size="20" />
+			</td>
+		</tr>
+
+		<tr>
+			<td>Login as :</td>
+			<td>
+			    <select>
+                       <option id="loginType" value="adminLogin">Admin-Login</option>
+                       <option id="loginType" value="companyLogin">Company-Login</option>
+                       <option id="loginType" value="customerLogin">Customer-Login</option>
+                </select>
+			</td>
+		</tr>
+
+		
+		<input type="button" value="Login" onclick="doLoginAjaxCall()" />
+		
+	</table>
+
+</body>
+</html>

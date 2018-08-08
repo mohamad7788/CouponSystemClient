@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+	var xmlhttp;
+
+	function init() {
+		xmlhttp = new XMLHttpRequest();
+	}
+
+	function getDetails() {
+		var url = "http://localhost:8080/CouponSystemClient/rest/AdminService/getAllCompanies" ;
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send(null);
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4) {
+				if (xmlhttp.status == 200) {
+					var obj = eval("("+xmlhttp.responseText+")");
+					var allComapnies = document.getElementById("allCompanies");
+					allComapnies.value = obj.CompanyList ; 
+				}
+				else
+					alert("Error with the response -> " + xmlhttp.responseText);
+			}
+		};
+	}
+</script>
+
+</head>
+<body onload="init()">
+	<h1>Call Company Service</h1>
+
+	<table>
+
+		<tr>
+			<input type="button" value="Get Comapanies List" onclick="getDetails()" /> </br>
+			<td>All Customers</td>
+			<td><input type="text" id="allCompanies" size="100" /> 
+			
+		</tr>
+
+		
+	</table>
+
+</body>
+</html>
